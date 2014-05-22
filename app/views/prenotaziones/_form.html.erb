@@ -15,21 +15,35 @@
     <%= f.label :nome %><br>
     <%= f.text_field :nome %>
   </div>
-  <div class="field">
+  <div class="field" hidden="true">
     <%= f.label :Pdata %><br>
     <%= f.datetime_select :Pdata %>
   </div>
-  <div class="field">
+  <div class="field" hidden="true">
     <%= f.label :Pgiorno %><br>
     <%= f.date_select :Pgiorno %>
   </div>
-  <div class="field">
+  <div class="field" hidden="true">
     <%= f.label :Pora %><br>
     <%= f.time_select :Pora %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+
+
+
+
+    <input type="text"  id="input1" name="input1"  onChange = "display()" value=""  class="datepicker" >
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input id="datetimepicker5"  onchange="enab()"  onfocus="input1.focus()" onclick="display()" type="text ">
+    <br>
+    <br>
+
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+
+
 <% end %>
 
 
@@ -500,11 +514,6 @@ puts(allowTimes)
 </head>
 
 
-
-
-<input type="text"  id="input1" name="input1"  onChange = "display()" value=""  class="datepicker" >
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input id="datetimepicker5"  onchange="enab()"  onfocus="input1.focus()" onclick="display()" type="text ">
 
 
 
