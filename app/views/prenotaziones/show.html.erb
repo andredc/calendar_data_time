@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @prenotazione.nome %>
+</p>
+
+<p>
+  <strong>Pdata:</strong>
+  <%= @prenotazione.Pdata %>
+</p>
+
+<p>
+  <strong>Pgiorno:</strong>
+  <%= @prenotazione.Pgiorno %>
+</p>
+
+<p>
+  <strong>Pora:</strong>
+  <%= @prenotazione.Pora %>
+</p>
+
+<%= link_to 'Edit', edit_prenotazione_path(@prenotazione) %> |
+<%= link_to 'Back', prenotaziones_path %>

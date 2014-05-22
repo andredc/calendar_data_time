@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  Pdata: 2014-05-22 07:17:15
+  Pgiorno: 2014-05-22
+  Pora: 2014-05-22 07:17:16
+
+two:
+  nome: MyString
+  Pdata: 2014-05-22 07:17:15
+  Pgiorno: 2014-05-22
+  Pora: 2014-05-22 07:17:16

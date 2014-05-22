@@ -1,0 +1,519 @@
+<%= form_for(@prenotazione) do |f| %>
+  <% if @prenotazione.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@prenotazione.errors.count, "error") %> prohibited this prenotazione from being saved:</h2>
+
+      <ul>
+      <% @prenotazione.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nome %><br>
+    <%= f.text_field :nome %>
+  </div>
+  <div class="field">
+    <%= f.label :Pdata %><br>
+    <%= f.datetime_select :Pdata %>
+  </div>
+  <div class="field">
+    <%= f.label :Pgiorno %><br>
+    <%= f.date_select :Pgiorno %>
+  </div>
+  <div class="field">
+    <%= f.label :Pora %><br>
+    <%= f.time_select :Pora %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<!-- #form professore + codice ruby per il collegamento al server-->
+<!--
+equire 'rubygems'
+require 'active_record'
+require 'mysql2'
+
+ActiveRecord::Base.establish_connection(
+:adapter => 'mysql2',
+:host => 'localhost',
+:username => 'root',
+:password =>  '',
+:port => '3306',
+:database => 'calendar_data_time_development')
+
+class prenotaziones < ActiveRecord::Base
+end
+
+@reservation = prenotaziones.select('Pgiorno, count(Pgiorno) as nres') .group('Pgiorno') .having('count(Pgiorno) >= ?', 1) .order('Pgiorno asc')
+def no_prenot
+sum=0.0
+@reservation.each {|res| sum+= 1}
+sum
+end
+puts no_prenot
+
+
+@reservation.each {|res|
+puts res.Pgiorno.to_s + ' ' + res.nres.to_s }
+
+acceptanceTimes = ['08:00' , '08:30' , '09:00' , '09:30' ,'10:00']
+unavailableslot = []
+allowTimes = []
+onDay = '2014-05-14'
+@slot = prenotaziones.select('Pora' ) .where('Pgiorno = ?', onDay) .order('Pora asc')
+puts 'Unavailable Slots on day: ' + onDay
+@slot.each {|res|
+xh = res.Pora.hour.to_s
+xm = res.Pora.min.to_s
+if (xh == '8' || xh == '9')
+xh = '0' + xh
+end
+if xm < '30'
+xm ='00'
+end
+xx = xh + ":" + xm
+puts xx
+unavailableslot.push(xx)
+}
+puts 'Available Slots on day: ' + onDay
+for i in acceptanceTimes
+if (unavailableslot.index(i) == nil)
+allowTimes.push(i)
+end
+end
+puts(allowTimes)
+-->
+
+
+
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Disabling Holidays & Weekends</title>
+
+
+
+
+<link rel="stylesheet" href="/jquery-ui.css">
+<script src="/jquery-1.9.1.js"></script>
+<script src="/jquery-ui.js"></script>
+
+
+<script src="/jquery.datetimepicker.js"></script>
+<link rel="/jquery.datetimepicker.css"/>
+
+<style>
+
+
+    {
+        font-family:Times;
+        font-size : 8pt;
+        padding:3px;
+    }
+    /* Vari stili per le caselle abilitate */
+
+    .Highlighted a{
+        background-color : #fdd556 !important;
+        background-image :none !important;
+        color: black !important;
+        font-weight:bold !important;
+        font-size: 8pt;
+    }
+
+    .Highlightedc a{
+        background-color : #fdd556 !important;
+        background-image :none !important;
+        color: red !important;
+        border-color: Red !important;
+        font-weight:bold !important;
+        font-size: 10pt;
+    }
+
+
+
+
+    .Highlighted1 a{
+        background-color :LightGreen  !important;
+        background-image :none !important;
+        color: black !important;
+        font-weight:bold !important;
+        font-size: 8pt;
+    }
+    .Highlighted1c a{
+        background-color :LightGreen  !important;
+        background-image :none !important;
+        color: red !important;
+        border-color: Red !important;
+        font-weight:bold !important;
+        font-size: 10pt;
+    }
+
+    .Highlighted2 a{
+        background-color :Red !important;
+        background-image :none !important;
+        color: White !important;
+        font-weight:bold !important;
+        font-size: 8pt;
+    }
+
+    .Highlighted3 a{
+        /*  background-color :White !important; */
+        background-image :none !important;
+        color: Black !important;
+        font-weight:bold !important;
+        border-color: Red !important;
+        font-size: 8pt;
+    }
+
+    .Highlighted4 a{
+        background-color : #a2fffa !important;
+        background-image :none !important;
+        color: black !important;
+        font-weight:bold !important;
+        font-size: 8pt;
+    }
+
+    .Highlighted4c a{
+        background-color : #a2fffa !important;
+        background-image :none !important;
+        color: red !important;
+        font-weight:bold !important;
+        border-color = Red !important;
+        font-size: 10pt;
+    }
+
+    /* Stile per le caselle disabilitate */
+    .ui-datepicker td.ui-state-disabled>span{background:#f00037;}
+    .ui-datepicker td.ui-state-disabled{opacity:300;}
+
+
+    .ui-datepicker-calendar .ui-datepicker-today a,
+    .ui-datepicker-calendar .ui-datepicker-today a.ui-state-hover {
+        background-color: #38c;
+        border-color: #38c;
+        color: #fff;
+        text-shadow: 0 1px 0 #059;
+    }
+    /* Stile per le caselle relative ai week-ends */
+    .ui-datepicker-week-end a {
+        color: yellow !important;
+    }
+
+    .ui-datepicker-current-day
+    {
+        background: #0000FF
+    }
+
+
+
+</style>
+
+<script>
+
+    var tpicker = true;
+    var dpicker = '';
+    var T01 = true;
+    var T0 = true;
+
+
+    /*******************************   FUNCTION TIMESLOT ***************************************************/
+
+    function timeslot() {
+        x = document.getElementById('input1').value ;
+        var stg = x.substr(0,2);
+        var stm = x.substr(3,2);
+        var sta = x.substr(6,4);
+        acceptancetimes = ['08:00' , '08:30' , '09:00' , '09:30' ,'10:00'];
+        unavailableslot = [];
+        allowTimes = [];
+        if (x == dpicker) {
+            allowTimes = [];
+            datetimepicker5.value= '';
+        };
+
+        <% @slot.each {|res| %>
+        if ( stg ==  <%= res.Pgiorno.day %> && stm ==  <%= res.Pgiorno.month %> && sta ==  <%= res.Pgiorno.year %>  )
+        {
+            xh = <%= res.Pora.hour %> ;
+            xm =  <%= res.Pora.min %> ;
+            if (xh < 10) {xh = '0'+ xh};
+            if (xm < 10) {xm = '0'+ xm};
+            xhm = xh + ':' + xm ;
+            unavailableslot.push(xhm);
+        }
+        <%  } %>
+
+        for (i = 0; i < allowTimes.length - 1; ++ i) datepicker5.allowTimes.pop();
+        for (i = 0; i < 5; ++ i)
+        {
+            iz = acceptancetimes[i];
+            if (unavailableslot.indexOf(iz) == -1)
+                allowTimes.push(iz);
+        }
+
+        if (allowTimes.length == 0)
+        {dpicker = x ;
+        }
+        return allowTimes;
+    }
+
+
+
+
+    /***************************************** FUNCTION AJAX *******************************************/
+
+
+
+    var fullDates = Array();
+    var closeTofullDates = Array();
+    var holidayDates = Array(); // this array will store the holiday dates after being extracted form the JSON
+    $.ajax({
+        url: '/bank-holiday4.json',
+        method: 'GET',
+        dataType: 'json',
+        async: false,
+
+        success: function(data) {
+
+            <%  @reservation.each {|rs| %>
+            xdy = <%= rs.Pgiorno.year %>;
+            xdm = <%= rs.Pgiorno.month %>;
+            xdd = <%= rs.Pgiorno.day %>;
+            if (xdm < '10') {xdm = '0'+ xdm};
+            if (xdd < '10') {xdd = '0'+ xdd};
+            xd =  xdd + "/" + xdm + "/" + xdy;
+            np= <%= rs.nres %>;
+            if ( np > 4 ) {
+                fullDates.push(xd)};
+            if ( np > 0 && np <5 ) {//alert('some ' + xd);
+                closeTofullDates.push(xd)};
+            <% } %>
+            var hDates = Array (3);
+            for (i = 0; i < 3; ++ i)
+                hDates[i] = Array (3);
+            var listOfEvents = data['england-and-wales'];
+            var j = 0;
+            var k = 0;
+            var ik = -1 ;
+            var kk = 0 ;
+            for (var i in listOfEvents)
+            {
+                if (i == '2015' || i == '2016')
+                {
+                    ik = ik + 1;
+                    for (var j in listOfEvents[i])
+                    {
+                        holidayDates.push(listOfEvents[i][j].date);
+                        var st = holidayDates[k].toString();
+                        k= k+1;
+                        hDates[ik][j] = st;
+                        //alert(hDates[ik][j]);
+                    } // End Loop j
+                } // Limiting the years
+            } // End Loop i
+        } // End of Function
+    });
+
+    /***************************************** IS WEEK-END *******************************************/
+
+    function IsWeekend(date) {
+        if (date.getDay() === 0 || date.getDay() === 6) return true;
+        else return false;
+    }
+
+    /***************************************** DATEPICKER DEFINITION *******************************************/
+
+    $(function() {
+        $(".datepicker").datepicker({
+            minDate: ('d'),
+            dateFormat: 'dd/mm/yy',
+            changeYear: true,
+            changeMonth: true,
+            beforeShowDay: function(date) {
+                var string = jQuery.datepicker.formatDate('dd/mm/yy', date);
+                var isDisabled = (IsWeekend(date) || holidayDates.indexOf(string) != -1);
+                if (isDisabled) return false ;
+                if (string == input1.value) {
+                    if (fullDates.indexOf(string) != -1) return [true, "Highlightedc" ];
+                    else if (closeTofullDates.indexOf(string) != -1) return [true, "Highlighted4c" ];
+                    else  return [true, "Highlighted1c"];
+                }
+                else if (fullDates.indexOf(string) != -1) return [true, "Highlighted" ];
+                else if (closeTofullDates.indexOf(string) != -1) return [true, "Highlighted4" ];
+                else  return [true, "Highlighted1"];
+            }
+        });
+        //alert(T0);
+        if (T0 == true) {
+            //alert(document.getElementById("prenotazione_Pdata_1i").value);
+            today1 = document.getElementById("prenotazione_Pdata_3i").value ;
+            var today1x = today1;
+            if (today1 < 10) today1x = '0' + today1 ;
+            today2 = document.getElementById("prenotazione_Pdata_2i").value ;
+            var today2x = today2;
+            if (today2 < 10) var today2x = '0' + today2 ;
+            var today3x = document.getElementById("prenotazione_Pdata_1i").value;
+            today = today1x + "/" + today2x + "/" +   today3x;
+            input1.value  = today;
+            //alert(today);
+            T0 = false;
+        };
+    });
+
+
+
+    /* -----------------------------  CHECK DATE FORMAT  ---------------------------------------- */
+
+    // Validates that the input string is a valid date formatted as "dd/mm/yyyy"
+
+    function isValidDate(dateString)
+    {
+        // First check for the pattern
+        if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+            return false;
+
+        // Parse the date parts to integers
+        var parts = dateString.split("/");
+        var day = parseInt(parts[0], 10);
+        var month = parseInt(parts[1], 10);
+        var year = parseInt(parts[2], 10);
+
+        // Check the ranges of month and year
+        if(year < 1000 || year > 3000 || month == 0 || month > 12)
+            return false;
+
+        var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+        // Adjust for leap years
+        if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+            monthLength[1] = 29;
+
+        // Check the range of the day
+        return day > 0 && day <= monthLength[month - 1];
+    };
+
+
+
+
+    /* ------------------------------------  FUNCTION DISPLAY --------------------------------------------------- */
+
+    function display()
+    {   tpicker = true;
+        var x = document.getElementById("input1").value;
+        if (x == "" || isValidDate(x) == false) T0 = true;
+        if (T0 == true) {
+            today1 = document.getElementById("prenotazione_Pdata_3i").value ;
+            var today1x = today1;
+            if (today1 < 10) today1x = '0' + today1 ;
+            today2 = document.getElementById("prenotazione_Pdata_2i").value ;
+            var today2x = today2;
+            if (today2 < 10) var today2x = '0' + today2 ;
+            var today3x = document.getElementById("prenotazione_Pdata_1i").value;
+            today = today1x + "/" + today2x + "/" +   today3x;
+            input1.value  = today;
+            //alert(today);
+            T0 = false;
+        }
+        else {input1.value  = x} ;
+
+        document.getElementById("prenotazione_Pdata_1i").value = parseInt(x.substr(6,4));
+        document.getElementById("prenotazione_Pdata_2i").value = 10* parseInt(x.substr(3,1)) + parseInt(x.substr(4,1));
+        document.getElementById("prenotazione_Pdata_3i").value = 10*parseInt(x.substr(0,1)) + parseInt(x.substr(1,1));
+
+        document.getElementById("prenotazione_Pgiorno_1i").value = parseInt(x.substr(6,4));
+        document.getElementById("prenotazione_Pgiorno_2i").value = 10* parseInt(x.substr(3,1)) + parseInt(x.substr(4,1));
+        document.getElementById("prenotazione_Pgiorno_3i").value = 10*parseInt(x.substr(0,1)) + parseInt(x.substr(1,1));
+
+        timeslot();
+        if (allowTimes.length > 0)
+        {
+            $('#datetimepicker5').datetimepicker({
+                datepicker:false,
+                FontColor: "yellow",
+                format:'H:i',
+                allowTimes: allowTimes
+            });
+            $("#datetimepicker5").css("color", "#000");
+            $("form").find("input[type*='submit']").removeAttr("disabled").removeClass('disabled').addClass('enabled');
+
+            datetimepicker5.disabled=false;
+            res = input1.value ;
+            var res1 = res.substr(0, 2);
+            var res2 = res.substr(3, 2);
+            var res3 = res.substr(6, 4);
+            var res4 = res3  + '/'  + res2 + '/' + res1
+            $('#input1').datepicker().datepicker('setDate', input1.value);
+            datetimepicker5.value = allowTimes[0];
+            datetimepicker5.focus();
+            input1.datepicker("refresh");
+        }
+        else {
+
+            datetimepicker5.value= 'niente posti liberi il ' + input1.value;
+            $('#input1').datepicker().datepicker('setDate', '');
+            datetimepicker5.disabled=true;
+            $('form :submit').attr("disabled", "disabled");
+            $("#datetimepicker5").css("color", "#f00");
+            input1.datepicker.show;
+        }
+    }
+
+
+    /* ------------------------------------  FUNCTION UPDATE COLOR --------------------------------------------------- */
+    function updateColor(element, color) {
+        $(element).css("color",
+                (color ? color.toHexString() : ""));
+    }
+
+    /* ------------------------------------  FUNCTION ENAB --------------------------------------------------- */
+
+    function enab() {
+        if (allowTimes.length > 0 ) {
+            var hm = datetimepicker5.value;
+            T01=true;
+            document.getElementById("prenotazione_Pdata_4i").value = hm.substr(0,2);
+            document.getElementById("prenotazione_Pdata_5i").value = hm.substr(3,2);
+
+            document.getElementById("prenotazione_Pora_4i").value = hm.substr(0,2);
+            document.getElementById("prenotazione_Pora_5i").value = hm.substr(3,2);
+            $('#input1').datepicker().datepicker('setDate', input1.value);
+            input1.datepicker("refresh");
+            datepicker5.click();
+            datetimepicker5.focus();
+        }
+        else {
+            //alert('no vacancy');
+            input1.value="No Vacancy";
+            datetimepicker5.disabled= true;
+        }
+    };
+
+
+</script>
+</head>
+
+
+
+
+<input type="text"  id="input1" name="input1" onclick="display()" onChange = "display()" value=""  class="datepicker" >
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input id="datetimepicker5"  onchange="enab()"  onfocus="input1.focus()" onclick="display()" type="text ">
+
+
+
+
+
+
+
+
+</html>
+
+
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source source="LOCAL" name="Rails calendar_data_time: development" uuid="fd87410c-8d34-4b3a-9c4a-b44c004659b3">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source source="LOCAL" name="Rails calendar_data_time: test" uuid="4a6ac936-7f56-4e31-a3d9-384a9ebd346c">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source source="LOCAL" name="Rails calendar_data_time: production" uuid="69fdd700-e988-4ed8-a1c5-e2133db98cb9">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+</component>

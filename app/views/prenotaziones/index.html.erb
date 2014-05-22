@@ -1,0 +1,33 @@
+<h1>Listing prenotaziones</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Pdata</th>
+      <th>Pgiorno</th>
+      <th>Pora</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @prenotaziones.each do |prenotazione| %>
+      <tr>
+        <td><%= prenotazione.nome %></td>
+        <td><%= prenotazione.Pdata %></td>
+        <td><%= prenotazione.Pgiorno %></td>
+        <td><%= prenotazione.Pora %></td>
+        <td><%= link_to 'Show', prenotazione %></td>
+        <td><%= link_to 'Edit', edit_prenotazione_path(prenotazione) %></td>
+        <td><%= link_to 'Destroy', prenotazione, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Prenotazione', new_prenotazione_path %>
