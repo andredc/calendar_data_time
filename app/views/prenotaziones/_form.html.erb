@@ -185,7 +185,7 @@ puts(allowTimes)
         background-image :none !important;
         color: red !important;
         font-weight:bold !important;
-        border-color = Red !important;
+        border-color : Red !important;
         font-size: 10pt;
     }
 
@@ -239,10 +239,10 @@ puts(allowTimes)
         };
 
         <% @slot.each {|res| %>
-        if ( stg ==  <%= res.Pgiorno.day %> && stm ==  <%= res.Pgiorno.month %> && sta ==  <%= res.Pgiorno.year %>  )
+        if ( stg == <%= res.Pgiorno.day %> && stm == <%= res.Pgiorno.month %> && sta == <%= res.Pgiorno.year %>  )
         {
             xh = <%= res.Pora.hour %> ;
-            xm =  <%= res.Pora.min %> ;
+            xm = <%= res.Pora.min %> ;
             if (xh < 10) {xh = '0'+ xh};
             if (xm < 10) {xm = '0'+ xm};
             xhm = xh + ':' + xm ;
@@ -502,7 +502,7 @@ puts(allowTimes)
 
 
 
-<input type="text"  id="input1" name="input1" onclick="display()" onChange = "display()" value=""  class="datepicker" >
+<input type="text"  id="input1" name="input1"  onChange = "display()" value=""  class="datepicker" >
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input id="datetimepicker5"  onchange="enab()"  onfocus="input1.focus()" onclick="display()" type="text ">
 

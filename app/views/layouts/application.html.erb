@@ -5,10 +5,57 @@
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
 </head>
 <body>
 
-<%= yield %>
+
+<div class="navbar  navbar-inverse" role="navigation">
+  <div class="container">
+    <div class= "navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to "Prenotazioni", new_prenotazione_path, :class=> "navbar-brand" %>
+    </div>
+    </button>
+    <div class="navbar-collapse collapse">
+      <form class="navbar-form navbar-right" role="form">
+        <div class="form-group">
+          <input type="text" placeholder="Email" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+      <ul class="nav  navbar-nav pull-right">
+        <li><%= link_to "Show Prenotazioni", root_path() %></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+
+  <%flash.each do |key, value| %>
+      <div class="alert alert-<%= key %>"><%= value %>
+        <a class="close" data-dismiss="alert">&#215;</a>
+      </div>
+  <% end %>
+
+  <hr>
+  <%= yield %>
+  <hr>
+
+  <%= debug(params) if Rails.env.development?%>
+</div>
 
 </body>
 </html>
