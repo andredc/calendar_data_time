@@ -1,4 +1,6 @@
 CalendarDataTime::Application.routes.draw do
+  resources :campis
+
   resources :prenotaziones
 
   root 'prenotaziones#index'

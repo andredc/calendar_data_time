@@ -229,6 +229,7 @@ puts(allowTimes)
 
 </style>
 
+
 <script>
 
     var tpicker = true;
@@ -300,6 +301,11 @@ puts(allowTimes)
             xdy = <%= rs.Pgiorno.year %>;
             xdm = <%= rs.Pgiorno.month %>;
             xdd = <%= rs.Pgiorno.day %>;
+
+          //   xd = <%= "rs.campo" %>;
+          //  if xd = "Areaditesto"     pseudocodice per discriminare le prenotazioni in base al campo
+            //    push
+
             if (xdm < '10') {xdm = '0'+ xdm};
             if (xdd < '10') {xdd = '0'+ xdd};
             xd =  xdd + "/" + xdm + "/" + xdy;
@@ -509,14 +515,32 @@ puts(allowTimes)
         }
     };
 
+    function display2()
+    {
+
+        var x = menu.value;
+
+
+             document.getElementById("prenotazione_nome").value = x;
+
+
+    }
 
 </script>
 </head>
 
 
+<body>
+<select name="menu" type="text"  id="menu"  onChange = "display2()">
+
+  <option value='' >  </option>
+     <% @campi.each {|res| %>
 
 
 
+      <option value= <%= res.nomecampo %> > <%= res.nomecampo %> </option> <% } %>
+</select>
+</body>
 
 
 

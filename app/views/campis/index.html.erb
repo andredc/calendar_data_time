@@ -1,0 +1,29 @@
+<h1>Listing campis</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nomecampo</th>
+      <th>Tipocampo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campis.each do |campi| %>
+      <tr>
+        <td><%= campi.nomecampo %></td>
+        <td><%= campi.tipocampo %></td>
+        <td><%= link_to 'Show', campi %></td>
+        <td><%= link_to 'Edit', edit_campi_path(campi) %></td>
+        <td><%= link_to 'Destroy', campi, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Campi', new_campi_path %>

@@ -88,11 +88,13 @@
     # GET /car_repair_reservations/1
     # GET /car_repair_reservations/1.json
     def show
+      @campi= Campi.select('nomecampo') .group('tipocampo')
+
     end
 
     # GET /car_repair_reservations/new
     def new
-
+      @campi= Campi.all
       @reservation = Prenotazione.select('Pgiorno, count(Pgiorno) as nres') .group('Pgiorno') .having('count(Pgiorno) >= ?', 1) .order('Pgiorno asc')
       @slot = Prenotazione.select('Pgiorno, Pora' ) .order('Pgiorno asc') .order('Pora desc')
 
@@ -110,7 +112,8 @@
 
     # GET /car_repair_reservations/1/edit
     def edit
-      @reservation = Prenotazione.select('Pgiorno, count(Pgiorno) as nres') .group('Pgiorno') .having('count(Pgiorno) >= ?', 1) .order('Pgiorno asc')
+     @campi= Campi.all
+      @reservation = Prenotazione.select('Pgiorno, count(Pgiorno) as nres') .group('Pgiorno') .having('count(Pgiorno) >= ?', 1) .order('Pgiorno asc')# .where('nome  ss' )
       @slot = Prenotazione.select('Pgiorno, Pora' ) .order('Pgiorno asc') .order('Pora asc')
     end
 

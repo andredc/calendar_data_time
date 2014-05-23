@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140522051715) do
+ActiveRecord::Schema.define(version: 20140522143654) do
+
+  create_table "campis", force: true do |t|
+    t.string   "nomecampo"
+    t.string   "tipocampo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "prenotaziones", force: true do |t|
     t.string   "nome"
